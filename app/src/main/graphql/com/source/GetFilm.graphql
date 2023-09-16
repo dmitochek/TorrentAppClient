@@ -1,0 +1,9 @@
+query GetFilm($input: String!) {
+    getfilm(search: $input) {
+    date
+    name
+    file_link
+    size
+    error
+  }
+}

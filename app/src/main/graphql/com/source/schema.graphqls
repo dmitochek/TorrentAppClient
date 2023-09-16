@@ -1,0 +1,13 @@
+type Media {
+  date: String
+  name: String
+  file_link: String
+  size: String
+  error: String
+}
+
+type Query {
+  getfilm(search: String!): [Media]
+}
+
+scalar Upload
