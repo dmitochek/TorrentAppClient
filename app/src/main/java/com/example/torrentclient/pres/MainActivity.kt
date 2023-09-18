@@ -10,14 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
 import com.example.torrentclient.R
 import com.example.torrentclient.data.repo.TorrentRepoImpl
-import com.example.torrentclient.domain.models.TorrentListInfo
 import com.example.torrentclient.domain.usecase.SearchUseCase
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var listView: ListView
-    lateinit var adapter: ArrayAdapter<String>
-    lateinit var mylist: List<String?>
+    lateinit var adapter: ArrayAdapter<ListItemModel>
+    lateinit var mylist: ArrayList<ListItemModel>
     private val filmsRepository = TorrentRepoImpl()
     private val searchUseCase = SearchUseCase(TorrentRepo = filmsRepository)
 
@@ -25,10 +24,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        listView = findViewById(R.id.listView) as ListView
+        mylist = searchUseCase.execute("").map{ ListItemModel(name = it?.name, date = it?.date, size = it?.size)} as ArrayList<ListItemModel>
+        adapter = ListItemAdapter(this, mylist)
 
-        mylist = searchUseCase.execute("").map{ it?.name }
-        adapter = ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, mylist )
+        listView = findViewById<ListView>(R.id.listView)
         listView.adapter = adapter
 
     }
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (mylist.isNotEmpty()) {
                     adapter.clear()
-                    mylist = searchUseCase.execute(query).map{ it?.name }
+                    mylist = searchUseCase.execute(query).map{ ListItemModel(name = it?.name, date = it?.date, size = it?.size)} as ArrayList<ListItemModel>
                     adapter.addAll(mylist)
                 } else {
                     Toast.makeText(this@MainActivity, "Not found", Toast.LENGTH_LONG).show()
@@ -54,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 adapter.clear()
-                mylist = searchUseCase.execute(newText).map{ it?.name }
+                mylist = searchUseCase.execute(newText).map{ ListItemModel(name = it?.name, date = it?.date, size = it?.size)} as ArrayList<ListItemModel>
                 adapter.addAll(mylist)
                 return false
             }
