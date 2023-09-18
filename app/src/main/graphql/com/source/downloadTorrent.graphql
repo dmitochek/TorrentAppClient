@@ -1,0 +1,3 @@
+query DownloadTorrent($input: String!) {
+    downloadtorrent(link: $input)
+}

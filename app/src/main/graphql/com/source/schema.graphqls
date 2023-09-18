@@ -6,8 +6,11 @@ type Media {
   error: String
 }
 
-type Query {
-  getfilm(search: String!): [Media]
+type Link {
+  file_link: String
 }
 
-scalar Upload
+type Query {
+  getfilm(search: String!): [Media]
+  downloadtorrent(link: String!): Boolean
+}
