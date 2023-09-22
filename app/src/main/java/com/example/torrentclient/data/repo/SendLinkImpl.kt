@@ -6,6 +6,7 @@ import android.util.Log
 import android.webkit.URLUtil
 import android.widget.Toast
 import com.example.torrentclient.data.apollo.ApolloServerInit
+import com.example.torrentclient.domain.repository.OpenFile
 import com.example.torrentclient.domain.repository.SendLink
 import com.example.torrentclient.pres.MainActivity
 import com.source.DownloadTorrentQuery
@@ -37,10 +38,12 @@ class SendLinkImpl: SendLink {
                 letDirectory.mkdirs()
                 val file = File(letDirectory, outputFileName)
                 val flag = file.createNewFile()
-                if (flag)
+                if (flag) {
                     FileOutputStream(file).use { fos ->
                         fos.channel.transferFrom(rbc, 0, Long.MAX_VALUE)
                     }
+                    OpenFileImpl.openFile(context, file)
+                }
                 else
                     Toast.makeText(context, "Error downloading torrent!", Toast.LENGTH_SHORT).show()
             }
