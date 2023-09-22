@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mylist = searchUseCase.execute("").map{ ListItemModel(name = it?.name, date = it?.date,
-            size = it?.size, file_link = it?.file_link)} as ArrayList<ListItemModel>
+            size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)} as ArrayList<ListItemModel>
         adapter = ListItemAdapter(this, mylist)
 
         listView = findViewById<ListView>(R.id.listView)
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 if (mylist.isNotEmpty()) {
                     adapter.clear()
                     mylist = searchUseCase.execute(query).map{ ListItemModel(name = it?.name,
-                        date = it?.date, size = it?.size, file_link = it?.file_link)}
+                        date = it?.date, size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)}
                             as ArrayList<ListItemModel>
                     adapter.addAll(mylist)
                 } else {
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onFinish() {
                     adapter.clear()
                     mylist = searchUseCase.execute(currentText).map{ ListItemModel(name = it?.name,
-                        date = it?.date, size = it?.size, file_link = it?.file_link)}
+                        date = it?.date, size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)}
                             as ArrayList<ListItemModel>
                     adapter.addAll(mylist)
                 }
