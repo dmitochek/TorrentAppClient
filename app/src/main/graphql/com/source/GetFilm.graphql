@@ -5,5 +5,7 @@ query GetFilm($input: String!) {
     file_link
     size
     error
+    lichers
+    seeders
   }
 }

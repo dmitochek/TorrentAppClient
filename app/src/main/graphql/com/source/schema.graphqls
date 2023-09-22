@@ -4,6 +4,8 @@ type Media {
   file_link: String
   size: String
   error: String
+  seeders: Int
+  lichers: Int
 }
 
 type Link {

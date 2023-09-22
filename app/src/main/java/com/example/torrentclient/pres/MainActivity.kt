@@ -74,8 +74,7 @@ class MainActivity : AppCompatActivity() {
 
                 return false
             }
-            var timer: CountDownTimer = object : CountDownTimer(800, 1000) {
-                //5000 for 5 seconds
+            var timer: CountDownTimer = object : CountDownTimer(800, 100) {
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
                     adapter.clear()

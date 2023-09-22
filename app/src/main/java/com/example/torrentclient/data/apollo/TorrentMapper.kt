@@ -9,6 +9,8 @@ fun GetFilmQuery.Getfilm.toSimpleTorrentInfo(): TorrentListInfo{
         name = name,
         file_link = file_link,
         size = size,
-        error = error
+        error = error,
+        lichers = lichers,
+        seeders = seeders
     )
 }
