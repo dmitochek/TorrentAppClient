@@ -1,6 +1,5 @@
 package com.example.torrentclient.pres
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -39,11 +38,12 @@ class MainActivity : AppCompatActivity() {
 
         listView.setOnItemClickListener { parent, _, position, _ ->
             val selectedItem = parent.getItemAtPosition(position) as ListItemModel
-            selectedItem.getLink()?.let { sendLinkUseCase.execute(it) }
+            selectedItem.getLink()?.let { sendLinkUseCase.execute(it, this) }
             selectedItem.getLink()?.let { Log.d("TAG", it) }
         }
 
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)

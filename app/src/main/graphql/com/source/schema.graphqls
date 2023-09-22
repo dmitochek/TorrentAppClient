@@ -12,5 +12,5 @@ type Link {
 
 type Query {
   getfilm(search: String!): [Media]
-  downloadtorrent(link: String!): Boolean
+  downloadtorrent(link: String!): String
 }
