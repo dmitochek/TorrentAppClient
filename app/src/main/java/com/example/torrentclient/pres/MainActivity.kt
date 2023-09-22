@@ -1,6 +1,7 @@
 package com.example.torrentclient.pres
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.Menu
 import android.widget.ArrayAdapter
@@ -14,6 +15,7 @@ import com.example.torrentclient.data.repo.SendLinkImpl
 import com.example.torrentclient.data.repo.TorrentRepoImpl
 import com.example.torrentclient.domain.usecase.SearchUseCase
 import com.example.torrentclient.domain.usecase.SendLinkUseCase
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,14 +66,24 @@ class MainActivity : AppCompatActivity() {
                 }
                 return false
             }
-
+            lateinit var currentText: String
             override fun onQueryTextChange(newText: String): Boolean {
-                adapter.clear()
-                mylist = searchUseCase.execute(newText).map{ ListItemModel(name = it?.name,
-                    date = it?.date, size = it?.size, file_link = it?.file_link)}
-                        as ArrayList<ListItemModel>
-                adapter.addAll(mylist)
+                timer.cancel()
+                timer.start()
+                currentText = newText
+
                 return false
+            }
+            var timer: CountDownTimer = object : CountDownTimer(800, 1000) {
+                //5000 for 5 seconds
+                override fun onTick(millisUntilFinished: Long) {}
+                override fun onFinish() {
+                    adapter.clear()
+                    mylist = searchUseCase.execute(currentText).map{ ListItemModel(name = it?.name,
+                        date = it?.date, size = it?.size, file_link = it?.file_link)}
+                            as ArrayList<ListItemModel>
+                    adapter.addAll(mylist)
+                }
             }
         })
         return super.onCreateOptionsMenu(menu)
