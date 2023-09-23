@@ -36,7 +36,7 @@ class ListItemAdapter(context: Context, arrayList: ArrayList<ListItemModel>) :
         val lich = currentPosition?.getLich()
 
         if (seed != null) {
-            if (lich == 0 || seed / lich!! >= 0.7 && seed > 1)
+            if (lich == 0 || seed / lich!! >= 0.7 && seed > 5)
                 imgView.setImageResource(R.drawable.baseline_speed_24)
             else
                 imgView.setImageResource(R.drawable.baseline_watch_later_24)

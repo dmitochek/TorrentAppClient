@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <item
+        android:id="@+id/films_ru"
+        android:title="Наши фильмы" />
+
+    <item
+        android:id="@+id/top"
+        android:title="Топ за день" />
+
+    <item
+        android:id="@+id/films_foreign"
+        android:title="Зарубежные фильмы" />
+
+    <item
+        android:id="@+id/science_fiction"
+        android:title="Научная фантастика" />
+
+    <item
+        android:id="@+id/serials_foreign"
+        android:title="Зарубежные сериалы" />
+
+    <item
+        android:id="@+id/serials_ru"
+        android:title="Наши сериалы" />
+
+    <item
+        android:id="@+id/animation"
+        android:title="Мультипликация" />
+
+    <item
+        android:id="@+id/television"
+        android:title="Телевизор" />
+
+    <item
+        android:id="@+id/anime"
+        android:title="Аниме" />
+
+    <item
+        android:id="@+id/rel_foreign"
+        android:title="Иностранные релизы" />
+
+    <item
+        android:id="@+id/music"
+        android:title="Музыка" />
+
+    <item
+        android:id="@+id/games"
+        android:title="Игры" />
+
+    <item
+        android:id="@+id/soft"
+        android:title="Софт" />
+
+    <item
+        android:id="@+id/sport"
+        android:title="Спорт и здоровье" />
+
+    <item
+        android:id="@+id/humor"
+        android:title="Юмор" />
+
+    <item
+        android:id="@+id/books"
+        android:title="Книги" />
+
+    <item
+        android:id="@+id/work"
+        android:title="Хозяйство и быт"/>
+
+
+</menu>
