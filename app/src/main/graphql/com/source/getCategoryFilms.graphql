@@ -1,0 +1,11 @@
+query Getcategoryfilms($input: Int!)  {
+    getcategoryfilms(category: $input) {
+        date
+        error
+        file_link
+        lichers
+        name
+        seeders
+        size
+    }
+}

@@ -4,20 +4,20 @@
     tools:ignore="HardcodedText">
 
     <item
-        android:id="@+id/films_ru"
-        android:title="Наши фильмы" />
-
-    <item
-        android:id="@+id/top"
-        android:title="Топ за день" />
+        android:id="@+id/any_category"
+        android:title="Любая категория" />
 
     <item
         android:id="@+id/films_foreign"
         android:title="Зарубежные фильмы" />
 
     <item
-        android:id="@+id/science_fiction"
-        android:title="Научная фантастика" />
+        android:id="@+id/films_ru"
+        android:title="Наши фильмы" />
+
+    <item
+        android:id="@+id/science"
+        android:title="Научно-Популярные" />
 
     <item
         android:id="@+id/serials_foreign"
@@ -70,6 +70,10 @@
     <item
         android:id="@+id/work"
         android:title="Хозяйство и быт"/>
+
+    <item
+        android:id="@+id/another"
+        android:title="Другое"/>
 
 
 </menu>
