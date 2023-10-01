@@ -23,39 +23,16 @@ import com.example.torrentclient.domain.usecase.SearchUseCase
 import com.example.torrentclient.domain.usecase.SendLinkUseCase
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.ActionBar
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var listView: ListView
     lateinit var adapter: ArrayAdapter<ListItemModel>
     lateinit var mylist: ArrayList<ListItemModel>
-    private val filmsRepository = TorrentRepoImpl()
-    private val searchUseCase = SearchUseCase(TorrentRepo = filmsRepository)
-    private val sendLink = SendLinkImpl()
-    private val sendLinkUseCase = SendLinkUseCase(sendLink)
-    private val changeCategory = ChangeCategoryImpl()
-    private val changeCategoryUseCase = ChangeCategoryUseCase(changeCategory = changeCategory)
 
-    private val titleCategory = arrayOf(
-        "Любая категория",
-        "Зарубежные фильмы",
-        "Музыка",
-        "Другое",
-        "Зарубежные сериалы",
-        "Наши фильмы",
-        "Телевизор",
-        "Мультипликация",
-        "Игры",
-        "Софт",
-        "Аниме",
-        "Книги",
-        "Научно-Популярные",
-        "Спорт и здоровье",
-        "Хозяйство и быт",
-        "Юмор",
-        "Наши сериалы",
-        "Иностранные релизы"
-    )
+    private lateinit var vm: MainViewModel
 
     //Nav Drawer
     lateinit var drawerLayout: DrawerLayout
@@ -65,10 +42,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        vm = ViewModelProvider(this, MainViewModelFactory(this)).get(MainViewModel::class.java)
+
         actionBar = supportActionBar!!
 
-        mylist = searchUseCase.execute("").map{ ListItemModel(name = it?.name, date = it?.date,
-            size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)} as ArrayList<ListItemModel>
+        mylist = vm.getSearchUseCase("")
+
         adapter = ListItemAdapter(this, mylist)
 
         listView = findViewById<ListView>(R.id.listView)
@@ -76,8 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         listView.setOnItemClickListener { parent, _, position, _ ->
             val selectedItem = parent.getItemAtPosition(position) as ListItemModel
-            selectedItem.getLink()?.let { sendLinkUseCase.execute(it, this) }
-            selectedItem.getLink()?.let { Log.d("TAG", it) }
+            selectedItem.getLink()?.let { vm.executeSendLinkUseCase(it, this) }
         }
         setNavigationViewListener()
 
@@ -93,10 +72,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
     fun changeCat(category: Int)
     {
-        actionBar.title = titleCategory[category]
+        actionBar.title = vm.titleCategory[category]
         adapter.clear()
-        mylist = changeCategoryUseCase.execute(category = category).map{ ListItemModel(name = it?.name, date = it?.date,
-            size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)} as ArrayList<ListItemModel>
+        mylist = vm.getChangeCategoryUseCase(category)
         adapter.addAll(mylist)
     }
     private fun setNavigationViewListener(){
@@ -145,9 +123,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (mylist.isNotEmpty()) {
                     adapter.clear()
-                    mylist = searchUseCase.execute(query).map{ ListItemModel(name = it?.name,
-                        date = it?.date, size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)}
-                            as ArrayList<ListItemModel>
+                    mylist = vm.getSearchUseCase(query)
                     adapter.addAll(mylist)
                 } else {
                     Toast.makeText(this@MainActivity, "Not found", Toast.LENGTH_LONG).show()
@@ -166,9 +142,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
                     adapter.clear()
-                    mylist = searchUseCase.execute(currentText).map{ ListItemModel(name = it?.name,
-                        date = it?.date, size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)}
-                            as ArrayList<ListItemModel>
+                    mylist = vm.getSearchUseCase(currentText)
                     adapter.addAll(mylist)
                 }
             }
