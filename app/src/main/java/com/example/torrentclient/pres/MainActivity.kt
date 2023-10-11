@@ -9,28 +9,22 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.torrentclient.R
-import com.example.torrentclient.data.repo.ChangeCategoryImpl
-import com.example.torrentclient.data.repo.SendLinkImpl
-import com.example.torrentclient.data.repo.TorrentRepoImpl
-import com.example.torrentclient.domain.usecase.ChangeCategoryUseCase
-import com.example.torrentclient.domain.usecase.SearchUseCase
-import com.example.torrentclient.domain.usecase.SendLinkUseCase
-import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.ActionBar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import com.example.torrentclient.R
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var listView: ListView
     lateinit var adapter: ArrayAdapter<ListItemModel>
-    lateinit var mylist: ArrayList<ListItemModel>
+    var mylist: ArrayList<ListItemModel> = arrayListOf<ListItemModel>()
 
     private lateinit var vm: MainViewModel
 
@@ -47,7 +41,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         actionBar = supportActionBar!!
 
-        mylist = vm.getSearchUseCase("")
+
+        vm.livelist.observe(this, { data ->
+            mylist = data
+        })
 
         adapter = ListItemAdapter(this, mylist)
 
@@ -67,14 +64,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         actionBarDrawerToggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        changeCat(0)
-
     }
+
+    override fun onResume(){
+        super.onResume()
+        changeCat(0)
+    }
+
     fun changeCat(category: Int)
     {
         actionBar.title = vm.titleCategory[category]
         adapter.clear()
-        mylist = vm.getChangeCategoryUseCase(category)
+        vm.getChangeCategoryUseCase(category)
         adapter.addAll(mylist)
     }
     private fun setNavigationViewListener(){
@@ -123,7 +124,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (mylist.isNotEmpty()) {
                     adapter.clear()
-                    mylist = vm.getSearchUseCase(query)
+                    vm.getSearchUseCase(query)
                     adapter.addAll(mylist)
                 } else {
                     Toast.makeText(this@MainActivity, "Not found", Toast.LENGTH_LONG).show()
@@ -142,7 +143,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
                     adapter.clear()
-                    mylist = vm.getSearchUseCase(currentText)
+                    vm.getSearchUseCase(currentText)
                     adapter.addAll(mylist)
                 }
             }

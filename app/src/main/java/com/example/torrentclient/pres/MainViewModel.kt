@@ -1,6 +1,7 @@
 package com.example.torrentclient.pres
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.torrentclient.data.repo.ChangeCategoryImpl
 import com.example.torrentclient.data.repo.SendLinkImpl
@@ -14,6 +15,7 @@ class MainViewModel(
     private val changeCategoryUseCase: ChangeCategoryUseCase,
     private val sendLinkUseCase: SendLinkUseCase
 ) : ViewModel() {
+    val livelist = MutableLiveData<ArrayList<ListItemModel>>()
 
     val titleCategory = arrayOf(
         "Любая категория",
@@ -35,14 +37,19 @@ class MainViewModel(
         "Наши сериалы",
         "Иностранные релизы"
     )
-    fun getSearchUseCase(input: String): ArrayList<ListItemModel>{
-        return searchUseCase.execute(input).map{ ListItemModel(name = it?.name, date = it?.date,
+    fun <T> MutableLiveData<ArrayList<T>>.notifyObserver() {
+        this.value = this.value
+    }
+    fun getSearchUseCase(input: String){
+        livelist.value = searchUseCase.execute(input).map{ ListItemModel(name = it?.name, date = it?.date,
             size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)} as ArrayList<ListItemModel>
+        //livelist.notifyObserver()
     }
 
-    fun getChangeCategoryUseCase(category: Int): ArrayList<ListItemModel> {
-        return changeCategoryUseCase.execute(category = category).map{ ListItemModel(name = it?.name, date = it?.date,
+    fun getChangeCategoryUseCase(category: Int) {
+        livelist.value = changeCategoryUseCase.execute(category = category).map{ ListItemModel(name = it?.name, date = it?.date,
             size = it?.size, file_link = it?.file_link, lichers = it?.lichers, seeders = it?.seeders)} as ArrayList<ListItemModel>
+        //livelist.notifyObserver()
     }
 
     fun executeSendLinkUseCase(link: String, context: Context)
