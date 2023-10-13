@@ -13,12 +13,12 @@ class TorrentRepoImpl: TorrentRepo {
         val response = ApolloServerInit().init().query(GetFilmQuery(text)).execute()
         return response.data
     }
-    override fun getTorrents(text: String): Array<TorrentListInfo?> = runBlocking {
+    override suspend fun getTorrents(text: String): Array<TorrentListInfo?> {
         val response = getData(text)
             ?.getfilm
             ?.map{it?.toSimpleTorrentInfo()}
             ?: emptyList()
 
-        return@runBlocking response.toTypedArray()
+        return response.toTypedArray()
     }
 }

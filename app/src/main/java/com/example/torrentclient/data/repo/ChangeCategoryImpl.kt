@@ -12,13 +12,13 @@ class ChangeCategoryImpl: ChangeCategory {
         val response = ApolloServerInit().init().query(GetcategoryfilmsQuery(category)).execute()
         return response.data
     }
-    override fun getTorrents(category: Int): Array<TorrentListInfo?> = runBlocking {
+    override suspend fun getTorrents(category: Int): Array<TorrentListInfo?> {
         val response = getData(category)
             ?.getcategoryfilms
             ?.map{it?.toSimpleTorrentInfo()}
             ?: emptyList()
 
-        return@runBlocking response.toTypedArray()
+        return response.toTypedArray()
     }
 
 }

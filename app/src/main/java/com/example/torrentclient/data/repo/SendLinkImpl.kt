@@ -22,7 +22,7 @@ class SendLinkImpl: SendLink {
         val response = ApolloServerInit().init().query(DownloadTorrentQuery(link)).execute()
         return response.data
     }
-    override fun sendLink(link: String?, context: Context): Unit = runBlocking{
+    override suspend fun sendLink(link: String?, context: Context): Unit = runBlocking{
         val response = link?.let { getData(it) }
             ?.downloadtorrent
         downloadFile(URL(response), URLUtil.guessFileName(response, null, null), context)

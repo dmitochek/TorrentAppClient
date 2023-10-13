@@ -15,44 +15,44 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.torrentclient.R
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var listView: ListView
+    private lateinit var listView: ListView
     lateinit var adapter: ArrayAdapter<ListItemModel>
-    var mylist: ArrayList<ListItemModel> = arrayListOf<ListItemModel>()
+    var mylist: ArrayList<ListItemModel> = arrayListOf()
 
     private lateinit var vm: MainViewModel
 
     //Nav Drawer
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var actionBar: ActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        vm = ViewModelProvider(this, MainViewModelFactory(this)).get(MainViewModel::class.java)
+        vm = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         actionBar = supportActionBar!!
 
 
-        vm.livelist.observe(this, { data ->
+        vm.livelist.observe(this) { data ->
             mylist = data
-        })
+        }
 
         adapter = ListItemAdapter(this, mylist)
 
-        listView = findViewById<ListView>(R.id.listView)
+        listView = findViewById(R.id.listView)
         listView.adapter = adapter
 
         listView.setOnItemClickListener { parent, _, position, _ ->
             val selectedItem = parent.getItemAtPosition(position) as ListItemModel
+            //TODO
             selectedItem.getLink()?.let { vm.executeSendLinkUseCase(it, this) }
         }
         setNavigationViewListener()
@@ -71,10 +71,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         changeCat(0)
     }
 
-    fun changeCat(category: Int)
+    private fun changeCat(category: Int)
     {
         actionBar.title = vm.titleCategory[category]
         adapter.clear()
+        //TODO
         vm.getChangeCategoryUseCase(category)
         adapter.addAll(mylist)
     }
@@ -124,6 +125,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (mylist.isNotEmpty()) {
                     adapter.clear()
+                    //TODO
                     vm.getSearchUseCase(query)
                     adapter.addAll(mylist)
                 } else {
@@ -143,6 +145,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
                     adapter.clear()
+                    //TODO
                     vm.getSearchUseCase(currentText)
                     adapter.addAll(mylist)
                 }
