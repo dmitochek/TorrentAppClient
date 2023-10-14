@@ -1,8 +1,12 @@
 package com.example.torrentclient.data.repo
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import com.example.torrentclient.domain.repository.OpenFile
 import java.io.File
@@ -21,7 +25,17 @@ object OpenFileImpl: OpenFile {
             intent.setDataAndType(uri, "application/pdf")
         } else if (url.toString().contains(".torrent")) {
             // Torrent file
-            intent.setDataAndType(uri, "application/x-bittorrent")
+            try {
+                intent.setDataAndType(uri, "application/x-bittorrent")
+                context.startActivity(intent)
+            } catch(e: ActivityNotFoundException) {
+                try {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.utorrent.client")))
+                } catch (e: ActivityNotFoundException) {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.utorrent.client")))
+                }
+            }
+
         } else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
             // Powerpoint file
             intent.setDataAndType(uri, "application/vnd.ms-powerpoint")
@@ -64,6 +78,10 @@ object OpenFileImpl: OpenFile {
         }
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+        try {
+            context.startActivity(intent)
+        } catch (e: ActivityNotFoundException){
+            Toast.makeText(context, "Возникла ошибка!", Toast.LENGTH_SHORT).show()
+        }
     }
 }

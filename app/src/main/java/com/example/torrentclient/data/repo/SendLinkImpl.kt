@@ -37,6 +37,10 @@ class SendLinkImpl: SendLink {
                 val letDirectory = File(context.filesDir, "torrents")
                 letDirectory.mkdirs()
                 val file = File(letDirectory, outputFileName)
+                if (file.exists())
+                {
+                    file.delete()
+                }
                 val flag = file.createNewFile()
                 if (flag) {
                     FileOutputStream(file).use { fos ->
@@ -45,7 +49,7 @@ class SendLinkImpl: SendLink {
                     OpenFileImpl.openFile(context, file)
                 }
                 else
-                    Toast.makeText(context, "Error downloading torrent!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Ошибка загрузки торрента!", Toast.LENGTH_SHORT).show()
             }
         }
     }

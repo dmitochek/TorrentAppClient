@@ -1,5 +1,6 @@
 package com.example.torrentclient.pres
 
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.Menu
@@ -19,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.torrentclient.R
 import com.google.android.material.navigation.NavigationView
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -78,6 +80,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager?.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+
     override fun onResume(){
         super.onResume()
         changeCat(0)
@@ -86,7 +94,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun changeCat(category: Int)
     {
         actionBar.title = vm.titleCategory[category]
-        vm.getChangeCategoryUseCase(category)
+        if (isNetworkAvailable())
+            vm.getChangeCategoryUseCase(category)
+        else
+            Toast.makeText(this@MainActivity, "Нет подключения к интернету", Toast.LENGTH_LONG).show()
+
     }
     private fun setNavigationViewListener(){
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -133,9 +145,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (mylist.isNotEmpty()) {
-                    vm.getSearchUseCase(query)
+                    if (isNetworkAvailable())
+                        vm.getSearchUseCase(query)
+                    else
+                        Toast.makeText(this@MainActivity, "Нет подключения к интернету", Toast.LENGTH_LONG).show()
+
                 } else {
-                    Toast.makeText(this@MainActivity, "Not found", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "Не найдено", Toast.LENGTH_LONG).show()
                 }
                 return false
             }
@@ -150,7 +166,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var timer: CountDownTimer = object : CountDownTimer(800, 100) {
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
-                    vm.getSearchUseCase(currentText)
+                    if (isNetworkAvailable())
+                        vm.getSearchUseCase(currentText)
+                    else
+                        Toast.makeText(this@MainActivity, "Нет подключения к интернету", Toast.LENGTH_LONG).show()
                 }
             }
         })
