@@ -2,11 +2,12 @@ package com.example.torrentclient.pres
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -32,6 +33,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var actionBar: ActionBar
 
+    private var progressBar: ProgressBar? = null
+
+    private var loading: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,10 +43,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         vm = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         actionBar = supportActionBar!!
+        progressBar = findViewById(R.id.progress_Bar)
 
-
+        adapter = ListItemAdapter(this, mylist)
         vm.livelist.observe(this) { data ->
+            progressBar!!.visibility = View.GONE
             mylist = data
+            loading = false
+            adapter.addAll(mylist)
+        }
+        vm.loading.observe(this){ data ->
+            loading = data
+            adapter.clear()
+            progressBar!!.visibility = View.VISIBLE
         }
 
         adapter = ListItemAdapter(this, mylist)
@@ -52,7 +65,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         listView.setOnItemClickListener { parent, _, position, _ ->
             val selectedItem = parent.getItemAtPosition(position) as ListItemModel
-            //TODO
             selectedItem.getLink()?.let { vm.executeSendLinkUseCase(it, this) }
         }
         setNavigationViewListener()
@@ -74,10 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun changeCat(category: Int)
     {
         actionBar.title = vm.titleCategory[category]
-        adapter.clear()
-        //TODO
         vm.getChangeCategoryUseCase(category)
-        adapter.addAll(mylist)
     }
     private fun setNavigationViewListener(){
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -124,10 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (mylist.isNotEmpty()) {
-                    adapter.clear()
-                    //TODO
                     vm.getSearchUseCase(query)
-                    adapter.addAll(mylist)
                 } else {
                     Toast.makeText(this@MainActivity, "Not found", Toast.LENGTH_LONG).show()
                 }
@@ -144,10 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var timer: CountDownTimer = object : CountDownTimer(800, 100) {
                 override fun onTick(millisUntilFinished: Long) {}
                 override fun onFinish() {
-                    adapter.clear()
-                    //TODO
                     vm.getSearchUseCase(currentText)
-                    adapter.addAll(mylist)
                 }
             }
         })

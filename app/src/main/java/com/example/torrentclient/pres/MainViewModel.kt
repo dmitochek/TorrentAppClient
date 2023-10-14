@@ -1,18 +1,12 @@
 package com.example.torrentclient.pres
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.torrentclient.domain.usecase.ChangeCategoryUseCase
 import com.example.torrentclient.domain.usecase.SearchUseCase
 import com.example.torrentclient.domain.usecase.SendLinkUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-
-import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.api.BooleanExpression
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -22,6 +16,7 @@ class MainViewModel(
     private val sendLinkUseCase: SendLinkUseCase
 ) : ViewModel() {
     val livelist = MutableLiveData<ArrayList<ListItemModel>>()
+    val loading = MutableLiveData(false)
 
     val titleCategory = arrayOf(
         "Любая категория",
@@ -47,7 +42,8 @@ class MainViewModel(
     //TODO rewriting correctly...
 
     fun getChangeCategoryUseCase(category: Int) {
-        var result: ArrayList<ListItemModel>? = null
+        loading.postValue(true)
+        var result: ArrayList<ListItemModel>?
         viewModelScope.launch(Dispatchers.IO) {
             result = changeCategoryUseCase.execute(category = category).map {
                 ListItemModel(
@@ -64,7 +60,8 @@ class MainViewModel(
     }
 
     fun getSearchUseCase(input: String) {
-        var result: ArrayList<ListItemModel>? = null
+        loading.postValue(true)
+        var result: ArrayList<ListItemModel>?
         viewModelScope.launch {
             result = searchUseCase.execute(input).map {
                 ListItemModel(

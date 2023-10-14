@@ -26,7 +26,18 @@ tools:ignore="HardcodedText">
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="fill_parent" />
+    <ProgressBar
+        android:id="@+id/progress_Bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="70dp"/>
+
 </RelativeLayout>
+
 <com.google.android.material.navigation.NavigationView
     android:id="@+id/nav_view"
     android:layout_width="wrap_content"
