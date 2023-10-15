@@ -142,6 +142,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val searchViewItem = menu.findItem(R.id.search_bar)
         val searchView = MenuItemCompat.getActionView(searchViewItem) as SearchView
 
+        searchView.setOnCloseListener {
+            if (isNetworkAvailable())
+                changeCat(0)
+            false
+        }
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (mylist.isNotEmpty()) {
@@ -175,4 +181,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
         return super.onCreateOptionsMenu(menu)
     }
+
 }
