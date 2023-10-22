@@ -1,8 +1,10 @@
 package com.example.torrentclient.pres
 
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -131,6 +133,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.settings){
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
         return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             true
         } else super.onOptionsItemSelected(item)
