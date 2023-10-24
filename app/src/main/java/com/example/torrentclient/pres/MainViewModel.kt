@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.torrentclient.domain.usecase.ChangeCategoryUseCase
+import com.example.torrentclient.domain.usecase.LoadThemeUseCase
 import com.example.torrentclient.domain.usecase.SearchUseCase
 import com.example.torrentclient.domain.usecase.SendLinkUseCase
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val searchUseCase: SearchUseCase,
     private val changeCategoryUseCase: ChangeCategoryUseCase,
-    private val sendLinkUseCase: SendLinkUseCase
+    private val sendLinkUseCase: SendLinkUseCase,
+    private val loadThemeUseCase: LoadThemeUseCase,
 ) : ViewModel() {
     val livelist = MutableLiveData<ArrayList<ListItemModel>>()
     val loading = MutableLiveData(false)
@@ -82,6 +84,12 @@ class MainViewModel(
         viewModelScope.launch {
             sendLinkUseCase.execute(link, context)
         }
+    }
+
+
+    fun executeLoadThemeUseCase(): Int
+    {
+        return loadThemeUseCase.execute()
     }
 
 }

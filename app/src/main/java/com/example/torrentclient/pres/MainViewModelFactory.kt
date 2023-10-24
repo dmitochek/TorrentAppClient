@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.torrentclient.data.repo.ChangeCategoryImpl
+import com.example.torrentclient.data.repo.CurrentThemeRepoImpl
 import com.example.torrentclient.data.repo.SendLinkImpl
 import com.example.torrentclient.data.repo.TorrentRepoImpl
 import com.example.torrentclient.domain.usecase.ChangeCategoryUseCase
+import com.example.torrentclient.domain.usecase.LoadThemeUseCase
 import com.example.torrentclient.domain.usecase.SearchUseCase
 import com.example.torrentclient.domain.usecase.SendLinkUseCase
 
@@ -19,9 +21,14 @@ class MainViewModelFactory(context: Context): ViewModelProvider.Factory{
 
     private val sendLink = SendLinkImpl()
     private val sendLinkUseCase = SendLinkUseCase(sendLink)
+
+    private val currentThemeRepo = CurrentThemeRepoImpl(context.applicationContext)
+    private val loadThemeUseCase = LoadThemeUseCase(currentThemeRepo)
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MainViewModel(searchUseCase = searchUseCase,
             changeCategoryUseCase =  changeCategoryUseCase,
-            sendLinkUseCase = sendLinkUseCase) as T
+            sendLinkUseCase = sendLinkUseCase,
+            loadThemeUseCase = loadThemeUseCase) as T
     }
 }

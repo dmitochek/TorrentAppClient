@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -41,10 +42,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var loading: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
+        vm = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
+
+        if (vm.executeLoadThemeUseCase() == 0)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        vm = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         actionBar = supportActionBar!!
         progressBar = findViewById(R.id.progress_Bar)
