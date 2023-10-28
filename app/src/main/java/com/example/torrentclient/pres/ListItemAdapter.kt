@@ -22,13 +22,13 @@ class ListItemAdapter(context: Context, arrayList: ArrayList<ListItemModel>) :
         val currentPosition: ListItemModel? = getItem(position)
 
         val dateView = currentItemView!!.findViewById<TextView>(com.example.torrentclient.R.id.date)
-        dateView.setText(currentPosition?.getDate())
+        dateView.text = currentPosition?.getDate()
 
         val nameView = currentItemView.findViewById<TextView>(com.example.torrentclient.R.id.name)
-        nameView.setText(currentPosition?.getName())
+        nameView.text = currentPosition?.getName()
 
         val sizeView = currentItemView.findViewById<TextView>(com.example.torrentclient.R.id.size)
-        sizeView.setText(currentPosition?.getSize())
+        sizeView.text = currentPosition?.getSize()
 
         val imgView = currentItemView.findViewById<ImageView>(com.example.torrentclient.R.id.speed)
 

@@ -8,7 +8,7 @@ import com.source.GetcategoryfilmsQuery
 import kotlinx.coroutines.runBlocking
 
 class ChangeCategoryImpl: ChangeCategory {
-    suspend fun getData(category: Int): GetcategoryfilmsQuery.Data?{
+    private suspend fun getData(category: Int): GetcategoryfilmsQuery.Data?{
         val response = ApolloServerInit().init().query(GetcategoryfilmsQuery(category)).execute()
         return response.data
     }

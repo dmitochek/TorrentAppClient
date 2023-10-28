@@ -1,4 +1,4 @@
-package com.example.torrentclient.domain.usecase
+package com.example.torrentclient.domain.repository
 
 import com.example.torrentclient.domain.models.TorrentListInfo
 

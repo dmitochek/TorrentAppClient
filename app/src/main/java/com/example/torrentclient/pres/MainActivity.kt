@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -86,17 +85,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         actionBarDrawerToggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        changeCat(0)
     }
 
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetworkInfo = connectivityManager?.activeNetworkInfo
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
-    }
-
-    override fun onResume(){
-        super.onResume()
-        changeCat(0)
     }
 
     private fun changeCat(category: Int)

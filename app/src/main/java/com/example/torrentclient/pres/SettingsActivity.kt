@@ -1,8 +1,6 @@
 package com.example.torrentclient.pres
 
-import android.content.Context
 import android.os.Bundle
-import android.widget.CompoundButton
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -11,7 +9,6 @@ import com.example.torrentclient.data.repo.CurrentThemeRepoImpl
 import com.example.torrentclient.domain.usecase.LoadThemeUseCase
 import com.example.torrentclient.domain.usecase.SaveThemeUseCase
 import com.google.android.material.switchmaterial.SwitchMaterial
-import android.util.Log
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -28,11 +25,10 @@ class SettingsActivity : AppCompatActivity() {
         loadThemeUseCase = LoadThemeUseCase(currentThemeRepo)
         saveThemeUseCase = SaveThemeUseCase(currentThemeRepo)
 
-        var actionBar: ActionBar
-        actionBar = supportActionBar!!
+        val actionBar: ActionBar = supportActionBar!!
         actionBar.title = "Настройки"
 
-        var switchTheme: SwitchMaterial = findViewById(R.id.themeSwitch)
+        val switchTheme: SwitchMaterial = findViewById(R.id.themeSwitch)
 
         if (loadThemeUseCase.execute() == 0) {
             switchTheme.isChecked = true

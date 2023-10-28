@@ -3,13 +3,12 @@ package com.example.torrentclient.data.repo
 import com.example.torrentclient.data.apollo.ApolloServerInit
 import com.example.torrentclient.data.apollo.toSimpleTorrentInfo
 import com.example.torrentclient.domain.models.TorrentListInfo
-import com.example.torrentclient.domain.usecase.TorrentRepo
+import com.example.torrentclient.domain.repository.TorrentRepo
 import com.source.GetFilmQuery
-import kotlinx.coroutines.runBlocking
 
 class TorrentRepoImpl: TorrentRepo {
 
-    suspend fun getData(text: String): GetFilmQuery.Data?{
+    private suspend fun getData(text: String): GetFilmQuery.Data?{
         val response = ApolloServerInit().init().query(GetFilmQuery(text)).execute()
         return response.data
     }

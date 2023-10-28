@@ -2,7 +2,6 @@ package com.example.torrentclient.data.repo
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.example.torrentclient.domain.repository.CurrentThemeRepo
 
 

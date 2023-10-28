@@ -1,14 +1,11 @@
 package com.example.torrentclient.data.repo
-import android.os.StrictMode
 import android.content.Context
+import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
-import android.util.Log
 import android.webkit.URLUtil
 import android.widget.Toast
 import com.example.torrentclient.data.apollo.ApolloServerInit
-import com.example.torrentclient.domain.repository.OpenFile
 import com.example.torrentclient.domain.repository.SendLink
-import com.example.torrentclient.pres.MainActivity
 import com.source.DownloadTorrentQuery
 import kotlinx.coroutines.runBlocking
 import java.io.File
