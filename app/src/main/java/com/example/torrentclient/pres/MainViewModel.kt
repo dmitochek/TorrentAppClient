@@ -79,6 +79,7 @@ class MainViewModel(
         }
     }
 
+    //Not used any more
     fun executeSendLinkUseCase(link: String, context: Context)
     {
         viewModelScope.launch {

@@ -52,4 +52,6 @@ dependencies {
     implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+
+    implementation("com.squareup.picasso:picasso:2.8")
 }

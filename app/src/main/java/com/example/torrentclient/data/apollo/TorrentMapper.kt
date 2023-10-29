@@ -1,6 +1,8 @@
 package com.example.torrentclient.data.apollo
 
+import com.example.torrentclient.domain.models.TorrentDetailedInfo
 import com.example.torrentclient.domain.models.TorrentListInfo
+import com.source.AdditionalInfoRutorQuery
 import com.source.GetFilmQuery
 import com.source.GetcategoryfilmsQuery
 
@@ -25,5 +27,12 @@ fun GetcategoryfilmsQuery.Getcategoryfilm.toSimpleTorrentInfo(): TorrentListInfo
         error = error,
         lichers = lichers,
         seeders = seeders
+    )
+}
+
+fun AdditionalInfoRutorQuery.AdditionalInfoRutor.toSimpleDetailedInfo(): TorrentDetailedInfo{
+    return TorrentDetailedInfo(
+        data = data,
+        imgs = imgs
     )
 }

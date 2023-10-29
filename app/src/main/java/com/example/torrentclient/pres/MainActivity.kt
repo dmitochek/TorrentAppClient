@@ -74,7 +74,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         listView.setOnItemClickListener { parent, _, position, _ ->
             val selectedItem = parent.getItemAtPosition(position) as ListItemModel
-            selectedItem.getLink()?.let { vm.executeSendLinkUseCase(it, this) }
+            selectedItem.getLink()?.let {
+                //vm.executeSendLinkUseCase(it, this)
+                val intent = Intent(this@MainActivity, DetailedInfoActivity::class.java)
+                intent.putExtra("link", it)
+                intent.putExtra("name", selectedItem.getName())
+                startActivity(intent)
+            }
         }
         setNavigationViewListener()
 

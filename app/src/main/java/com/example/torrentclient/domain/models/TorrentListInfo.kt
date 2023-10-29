@@ -8,6 +8,5 @@ class TorrentListInfo(
     val error: String?,
     val lichers: Int?,
     val seeders: Int?
-)
-{
+) {
 }

@@ -12,8 +12,14 @@ type Link {
   file_link: String
 }
 
+type RutorMoreInfo {
+  data: String
+  imgs: [String]
+}
+
 type Query {
   getfilm(search: String!): [Media]
   downloadtorrent(link: String!): String
   getcategoryfilms(category: Int!): [Media]
+  additionalInfoRutor(link: String!): RutorMoreInfo
 }
