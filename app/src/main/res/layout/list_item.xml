@@ -17,7 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/ubuntu"/>
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/speed"
             android:layout_width="wrap_content"
@@ -25,22 +26,27 @@
             android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="17sp"/>
+            android:fontFamily="@font/ubuntu"
+            android:textSize="17sp" />
+
         <TextView
             android:id="@+id/size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/ubuntu" />
     </LinearLayout>
 
 </LinearLayout>
