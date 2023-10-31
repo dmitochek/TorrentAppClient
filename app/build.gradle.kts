@@ -54,4 +54,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
     implementation("com.squareup.picasso:picasso:2.8")
+
+    //implementation ("com.github.smarteist:autoimageslider:1.4.0")
+    implementation ("com.github.smarteist:autoimageslider:1.4.0")
+
 }

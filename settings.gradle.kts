@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         google()
+
         mavenCentral()
         gradlePluginPortal()
     }
@@ -10,8 +11,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        maven { url = uri("https://www.jitpack.io" ) }
     }
 }
+
 
 rootProject.name = "TorrentClient"
 include(":app")
