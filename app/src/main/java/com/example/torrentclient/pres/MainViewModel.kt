@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.torrentclient.domain.usecase.ChangeCategoryUseCase
+import com.example.torrentclient.domain.usecase.InitNodeServerUseCase
 import com.example.torrentclient.domain.usecase.LoadThemeUseCase
 import com.example.torrentclient.domain.usecase.SearchUseCase
 import com.example.torrentclient.domain.usecase.SendLinkUseCase
@@ -25,9 +26,12 @@ class MainViewModel(
     private val changeCategoryUseCase: ChangeCategoryUseCase,
     private val sendLinkUseCase: SendLinkUseCase,
     private val loadThemeUseCase: LoadThemeUseCase,
+    private val initNodeServerUseCase: InitNodeServerUseCase
 ) : ViewModel() {
     val livelist = MutableLiveData<ArrayList<ListItemModel>>()
     val loading = MutableLiveData(false)
+
+    external fun startNodeWithArguments(arguments: Array<String?>?): Int?
 
     val titleCategory = arrayOf(
         "Любая категория",
@@ -49,22 +53,19 @@ class MainViewModel(
         "Наши сериалы",
         "Иностранные релизы"
     )
-    external fun startNodeWithArguments(arguments: Array<String?>?): Int?
-    var _startedNodeAlready = false
+    private var _startedNodeAlready = false
 
     init {
         if (!_startedNodeAlready) {
             _startedNodeAlready = true
 
             Thread {
+                val nodeDir = initNodeServerUseCase.execute()
+
                 startNodeWithArguments(
                     arrayOf(
-                        "node", "-e",
-                        "var http = require('http'); " +
-                                "var versions_server = http.createServer( (request, response) => { " +
-                                "  response.end('Versions: ' + JSON.stringify(process.versions)); " +
-                                "}); " +
-                                "versions_server.listen(3000);"
+                        "node",
+                        "$nodeDir/main.js"
                     )
                 )
             }.start()
