@@ -40,7 +40,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var progressBar: ProgressBar? = null
 
     private var loading: Boolean = false
+
+    companion object {
+        init {
+            System.loadLibrary("native-lib")
+            System.loadLibrary("node")
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
+        //until
         vm = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         if (vm.executeLoadThemeUseCase() == 0)

@@ -1,6 +1,7 @@
 package com.example.torrentclient.pres
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,8 +9,16 @@ import com.example.torrentclient.domain.usecase.ChangeCategoryUseCase
 import com.example.torrentclient.domain.usecase.LoadThemeUseCase
 import com.example.torrentclient.domain.usecase.SearchUseCase
 import com.example.torrentclient.domain.usecase.SendLinkUseCase
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.URL
+import java.util.Timer
+import kotlin.concurrent.timerTask
+
 
 class MainViewModel(
     private val searchUseCase: SearchUseCase,
@@ -40,6 +49,44 @@ class MainViewModel(
         "Наши сериалы",
         "Иностранные релизы"
     )
+    external fun startNodeWithArguments(arguments: Array<String?>?): Int?
+    var _startedNodeAlready = false
+
+    init {
+        if (!_startedNodeAlready) {
+            _startedNodeAlready = true
+
+            Thread {
+                startNodeWithArguments(
+                    arrayOf(
+                        "node", "-e",
+                        "var http = require('http'); " +
+                                "var versions_server = http.createServer( (request, response) => { " +
+                                "  response.end('Versions: ' + JSON.stringify(process.versions)); " +
+                                "}); " +
+                                "versions_server.listen(3000);"
+                    )
+                )
+            }.start()
+
+            Timer().schedule(timerTask {
+                CoroutineScope(IO).launch {
+                    launch {
+                        Task()
+                    }
+                }
+            }, 10000)
+        }
+    }
+
+    fun Task(){
+        var nodeResponse = ""
+
+        nodeResponse = URL("http://127.0.0.1:3000/").readText()
+
+        Log.d("SERVERLALA", nodeResponse)
+    }
+
 
     //TODO rewriting correctly...
 

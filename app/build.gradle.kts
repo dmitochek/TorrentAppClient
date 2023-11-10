@@ -13,8 +13,30 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
+        ndkVersion = "26.1.10909125"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags.add("")
+                arguments.add("-DANDROID_STL=c++_shared")
+            }
+        }
+
+        ndk {
+            //abiFilters.add("armeabi-v7a", "x86", "arm64-v8a", "x86_64")
+            abiFilters.add("armeabi-v7a")
+            abiFilters.add("arm64-v8a")
+            abiFilters.add("x86")
+            abiFilters.add("x86_64")
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("CMakeLists.txt")
+        }
     }
 
     buildTypes {
@@ -33,6 +55,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 }
 apollo {
     service("service") {
