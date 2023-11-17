@@ -2,5 +2,6 @@ query AdditionalInfoRutor($link: String!) {
     additionalInfoRutor(link: $link) {
         data
         imgs
+        magnet
     }
 }

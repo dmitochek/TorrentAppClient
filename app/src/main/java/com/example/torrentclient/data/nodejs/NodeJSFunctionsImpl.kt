@@ -1,6 +1,7 @@
 import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
+import com.example.torrentclient.domain.models.NodeServerInfo
 import com.example.torrentclient.domain.repository.NodeJSFunctions
 import java.io.File
 import java.io.FileOutputStream
@@ -90,8 +91,7 @@ class NodeJSFunctionsImpl(private val context: Context): NodeJSFunctions {
         }
     }
 
-    override fun initNodeServer(): String{
-        Log.d("NODE", context.applicationContext.cacheDir.toString())
+    override fun initNodeServer(): NodeServerInfo {
         val nodeDir: String =
             context.applicationContext.filesDir.absolutePath + "/nodejs-project"
         val nodeDirReference = File(nodeDir)
@@ -100,7 +100,7 @@ class NodeJSFunctionsImpl(private val context: Context): NodeJSFunctions {
         }
         copyAssetFolder(context.applicationContext.assets, "nodejs-project", nodeDir)
 
-        return nodeDir
+        return NodeServerInfo(nodeDir = nodeDir, path = context.applicationContext.cacheDir.toString())
     }
 
 }

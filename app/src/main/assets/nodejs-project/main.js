@@ -1,15 +1,12 @@
 import express from 'express';
 import WebTorrent from 'webtorrent';
-import path from 'path';
 import fs from 'fs';
 import os from 'os';
+import parseArgs from 'minimist';
 const PORT = 3000;
 
-/*
-if (!fs.existsSync("/tor")){
-    fs.mkdirSync("/tor");
-}*/
-// Server init
+const { path } = parseArgs(process.argv.slice(2));
+
 let client = new WebTorrent();
 let app = express();
 
@@ -50,10 +47,8 @@ app.get('/add/:magnet', function (req, res)
 
     let magnet = atob(req.params.magnet);
     console.log("here" + magnet);
-    //console.log(path.resolve("."));
-    console.log(os.tmpdir());
 
-    client.add(magnet, { path: "/data/user/0/com.example.torrentclient/cache" }, function (torrent)
+    client.add(magnet, { path: path }, function (torrent)
     {
 
         let files = [];

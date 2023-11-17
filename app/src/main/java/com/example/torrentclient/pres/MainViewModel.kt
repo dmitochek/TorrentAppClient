@@ -29,7 +29,7 @@ class MainViewModel(
     val livelist = MutableLiveData<ArrayList<ListItemModel>>()
     val loading = MutableLiveData(false)
 
-    external fun startNodeWithArguments(arguments: Array<String?>?): Int?
+    private external fun startNodeWithArguments(arguments: Array<String?>?): Int?
 
     val titleCategory = arrayOf(
         "Любая категория",
@@ -57,37 +57,18 @@ class MainViewModel(
         if (!_startedNodeAlready) {
             _startedNodeAlready = true
             Thread {
-                val nodeDir = initNodeServerUseCase.execute()
+                val nodeSerInfo = initNodeServerUseCase.execute()
 
                 startNodeWithArguments(
                     arrayOf(
                         "node",
-                        "$nodeDir/main.js"
+                        "${nodeSerInfo.nodeDir}/main.js",
+                        "--path=${nodeSerInfo.path}"
                     )
                 )
             }.start()
-
-            /*
-            Timer().schedule(timerTask {
-                CoroutineScope(IO).launch {
-                    launch {
-                        Task()
-                    }
-                }
-            }, 10000)*/
         }
     }
-
-    fun Task(){
-        var nodeResponse = ""
-
-        nodeResponse = URL("http://127.0.0.1:3000/add/Zm9fJUQwJUEyJUQwJUI1JUQwJUJCJUQwJUIwKyUyRitCb2RpZXMrJTVCUzAxJTVEKyUyODIwMjMlMjkrV0VCLURMKzEwODBwKyU3QytOZXdTdHVkaW8mdHI9dWRwOi8vb3BlbnRvci5uZXQ6Njk2OSZ0cj1odHRwOi8vcmV0cmFja2VyLmxvY2FsL2Fubm91bmNl").readText()
-
-        Log.d("SERVERLALA", nodeResponse)
-    }
-
-
-    //TODO rewriting correctly...
 
     fun getChangeCategoryUseCase(category: Int) {
         loading.postValue(true)
