@@ -14,8 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.URL
 import java.util.Timer
 import kotlin.concurrent.timerTask
@@ -58,7 +56,6 @@ class MainViewModel(
     init {
         if (!_startedNodeAlready) {
             _startedNodeAlready = true
-
             Thread {
                 val nodeDir = initNodeServerUseCase.execute()
 
@@ -70,20 +67,21 @@ class MainViewModel(
                 )
             }.start()
 
+            /*
             Timer().schedule(timerTask {
                 CoroutineScope(IO).launch {
                     launch {
                         Task()
                     }
                 }
-            }, 10000)
+            }, 10000)*/
         }
     }
 
     fun Task(){
         var nodeResponse = ""
 
-        nodeResponse = URL("http://127.0.0.1:3000/").readText()
+        nodeResponse = URL("http://127.0.0.1:3000/add/Zm9fJUQwJUEyJUQwJUI1JUQwJUJCJUQwJUIwKyUyRitCb2RpZXMrJTVCUzAxJTVEKyUyODIwMjMlMjkrV0VCLURMKzEwODBwKyU3QytOZXdTdHVkaW8mdHI9dWRwOi8vb3BlbnRvci5uZXQ6Njk2OSZ0cj1odHRwOi8vcmV0cmFja2VyLmxvY2FsL2Fubm91bmNl").readText()
 
         Log.d("SERVERLALA", nodeResponse)
     }

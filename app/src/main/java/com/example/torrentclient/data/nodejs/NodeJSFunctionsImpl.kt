@@ -1,5 +1,6 @@
 import android.content.Context
 import android.content.res.AssetManager
+import android.util.Log
 import com.example.torrentclient.domain.repository.NodeJSFunctions
 import java.io.File
 import java.io.FileOutputStream
@@ -90,6 +91,7 @@ class NodeJSFunctionsImpl(private val context: Context): NodeJSFunctions {
     }
 
     override fun initNodeServer(): String{
+        Log.d("NODE", context.applicationContext.cacheDir.toString())
         val nodeDir: String =
             context.applicationContext.filesDir.absolutePath + "/nodejs-project"
         val nodeDirReference = File(nodeDir)
