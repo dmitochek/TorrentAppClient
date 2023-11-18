@@ -16,7 +16,7 @@ class GetDetailedInfoImpl: GetDetailedInfo {
             getData(it)
                 ?.additionalInfoRutor
                 ?.toSimpleDetailedInfo()
-                ?: TorrentDetailedInfo(data = "Not Loaded", imgs = emptyList() )
+                ?: TorrentDetailedInfo(data = "Not Loaded", imgs = emptyList(), magnet = null )
         }
 
         return response

@@ -1,6 +1,7 @@
 package com.example.torrentclient.pres
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +24,7 @@ class DetailedInfoViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             result = loadDetailedInfoUseCase.execute(link = link)
             livedata.postValue(result)
+            result?.magnet?.let { Log.d("magnet", it) }
         }
     }
 

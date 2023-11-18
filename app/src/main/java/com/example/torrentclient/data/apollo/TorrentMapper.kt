@@ -33,6 +33,7 @@ fun GetcategoryfilmsQuery.Getcategoryfilm.toSimpleTorrentInfo(): TorrentListInfo
 fun AdditionalInfoRutorQuery.AdditionalInfoRutor.toSimpleDetailedInfo(): TorrentDetailedInfo{
     return TorrentDetailedInfo(
         data = data,
-        imgs = imgs
+        imgs = imgs,
+        magnet = magnet
     )
 }

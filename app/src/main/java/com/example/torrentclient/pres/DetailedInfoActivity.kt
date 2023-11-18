@@ -1,5 +1,6 @@
 package com.example.torrentclient.pres
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -33,8 +34,10 @@ class DetailedInfoActivity : AppCompatActivity() {
 
         progressBar = findViewById(R.id.progress_Bar_Load)
         actionBar = supportActionBar!!
-        actionBar.title = intent.getStringExtra("name")
+        val actionBarTitleName = intent.getStringExtra("name")
+        actionBar.title = actionBarTitleName
 
+        val butWatch: Button = findViewById(R.id.watch)
         val textBody: TextView = findViewById(R.id.body)
         vm.livedata.observe(this){ data ->
             progressBar!!.visibility = View.GONE
@@ -43,13 +46,18 @@ class DetailedInfoActivity : AppCompatActivity() {
             } else {
                 Html.fromHtml(data.data)
             }
-
             sliderAdapter = ArrayList(data.imgs)?.let { SliderAdapter(it) } !!
             sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
             sliderView.setSliderAdapter(sliderAdapter)
             sliderView.scrollTimeInSec = 3
             sliderView.isAutoCycle = true
             sliderView.startAutoCycle()
+            butWatch.setOnClickListener{
+                val intent = Intent(this@DetailedInfoActivity, EpisodesListActivity::class.java)
+                intent.putExtra("link", data.magnet)
+                intent.putExtra("name", actionBarTitleName)
+                startActivity(intent)
+            }
             loading = false
         }
         vm.loading.observe(this){ data ->
@@ -59,10 +67,12 @@ class DetailedInfoActivity : AppCompatActivity() {
 
         val butView: Button = findViewById(R.id.download)
 
+
         butView.setOnClickListener{
             intent.getStringExtra("link")?.let {
                     it1 -> vm.executeSendLinkUseCase(it1, this) }
         }
+
 
         intent.getStringExtra("link")?.let {
             vm.getLoadDetailedInfoUseCase(it)
