@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.apollographql.apollo3") version "3.8.2"
+
 }
 
 android {
@@ -80,5 +81,7 @@ dependencies {
 
     //implementation ("com.github.smarteist:autoimageslider:1.4.0")
     implementation ("com.github.smarteist:autoimageslider:1.4.0")
+
+    implementation("com.google.code.gson:gson:2.10.1")
 
 }
